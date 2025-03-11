@@ -126,8 +126,8 @@ int main() {
     std::cout << "\nAfter inserting after index 2:\n";
     list.display();
 
-    list.insertBefore(1, "InsertedBeforeThird", 50, 50.5);
-    std::cout << "\nAfter inserting before index 1:\n";
+    list.insertBefore(0, "InsertedBeforeFirst", 50, 50.5);
+    std::cout << "\nAfter inserting before index 0:\n";
     list.display();
 
     list.remove(2);
