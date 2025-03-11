@@ -122,16 +122,16 @@ int main() {
     std::cout << "First list:\n";
     list.display();
 
-    list.insertAfter(2, "InsertedAfterSecond", 40, 40.4);
-    std::cout << "\nAfter inserting after index 2:\n";
+    list.insertAfter(1, "InsertedAfterSecond", 40, 40.4);
+    std::cout << "\nAfter inserting after index 1:\n";
     list.display();
 
     list.insertBefore(0, "InsertedBeforeFirst", 50, 50.5);
-    std::cout << "\nAfter inserting before index 0:\n";
+    std::cout << "\nAfter inserting before index 2 :\n";
     list.display();
 
     list.remove(2);
-    std::cout << "\nAfter removing index 2:\n";
+    std::cout << "\nAfter removing index 3:\n";
     list.display();
 
     return 0;
