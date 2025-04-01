@@ -1,138 +1,142 @@
 #include <iostream>
 #include <string>
 
-struct NodeData {
-    std::string str;
-    int integer;
-    double dbl;
-
-    NodeData(std::string s, int i, double d) : str(s), integer(i), dbl(d) {}
-};
 
 struct Node {
-    NodeData data;
-    Node* next;
-
-    Node(std::string s, int i, double d) : data(s, i, d), next(nullptr) {}
+    std::string std;      
+    int integer;            
+    double dbl;          
+    Node* next = nullptr;  
 };
 
-class LinkedList {
+class List {
 private:
-    Node* head;
+    Node* head = nullptr;
 
 public:
-    LinkedList() : head(nullptr) {}
-
-    ~LinkedList() {                //Деструктор 
-        while (head) {             //Предназначен для освобождения памяти
-            Node* temp = head;     //выделенную для всех узлов списка   
-            head = head->next;     //чтобы избежать утечек памяти
-            delete temp;
-        }
+    
+    void addFirst(std::string std, int integer, double dbl) {
+        Node* newNode = new Node;
+        newNode->std = std;
+        newNode->integer = integer;
+        newNode->dbl = dbl;
+        newNode->next = head;
+        head = newNode;
     }
-
-    void append(std::string s, int i, double d) {
-        Node* newNode = new Node(s, i, d);
+    
+     
+    void addintheEnd(std::string std, int integer, double dbl) {
         if (!head) {
-            head = newNode;
+            addFirst(std, integer, dbl);
             return;
         }
         Node* temp = head;
-        while (temp->next) {
+        while (temp->next != nullptr) {
             temp = temp->next;
         }
+        Node* newNode = new Node;
+        newNode->std = std;
+        newNode->integer = integer;
+        newNode->dbl = dbl;
         temp->next = newNode;
     }
-
-    bool insertAfter(int index, std::string s, int i, double d) {
+    
+    void addAfterNumber(std::string targetNumber, std::string std, int integer, double dbl) {
+        if (!head || head->std == targetNumber) {
+            addFirst(std, integer, dbl);
+            return;
+        }
+        Node* previous = nullptr;
         Node* temp = head;
-        int count = 0;
-        while (temp && count < index) {
+        while (temp && temp->std != targetNumber) {
+            previous = temp;
             temp = temp->next;
-            count++;
         }
-        if (!temp) return false;
-
-        Node* newNode = new Node(s, i, d);
-        newNode->next = temp->next;
-        temp->next = newNode;
-        return true;
+        if (temp) {
+            Node* newNode = new Node;
+            newNode->std = std;
+            newNode->integer = integer;
+            newNode->dbl = dbl;
+            newNode->next = temp;
+            previous->next = newNode;
+        }
+        
     }
-
-    bool insertBefore(int index, std::string s, int i, double d) {
-        if (index == 0) {
-            Node* newNode = new Node(s, i, d);
-            newNode->next = head;
-            head = newNode;
-            return true;
+    
+    void addBeforeNumber(std::string targetNumber, std::string std, int integer, double dbl) {
+        if (!head || head->std == targetNumber) {
+            addFirst(std, integer, dbl);
+            return;
         }
-
+        Node* previous = nullptr;
         Node* temp = head;
-        int count = 0;
-        while (temp && count < index - 1) {
+        while (temp && temp->std != targetNumber) {
+            previous = temp;
             temp = temp->next;
-            count++;
         }
-        if (!temp || !temp->next) return false;
-
-        Node* newNode = new Node(s, i, d);
-        newNode->next = temp->next;
-        temp->next = newNode;
-        return true;
+        if (temp) {
+            Node* newNode = new Node;
+            newNode->std = std;
+            newNode->integer = integer;
+            newNode->dbl = dbl;
+            newNode->next = temp;
+            previous->next = newNode;
+        }
+        
     }
-
-    bool remove(int index) {
-        if (!head) return false;
-        if (index == 0) {
+    
+    void removeNumber(std::string std) {
+        if (head->std == std) {
             Node* temp = head;
             head = head->next;
             delete temp;
-            return true;
+            return;
         }
-
+        Node* previous = nullptr;
         Node* temp = head;
-        int count = 0;
-        while (temp->next && count < index - 1) {
+        while (temp && temp->std != std) {
+            previous = temp;
             temp = temp->next;
-            count++;
         }
-        if (!temp->next) return false;
-
-        Node* nodeToDelete = temp->next;
-        temp->next = nodeToDelete->next;
-        delete nodeToDelete;
-        return true;
+        if (temp) {
+            previous->next = temp->next;
+            delete temp;
+        }
     }
-
-    void display() {
+    
+    void printList() {
         Node* temp = head;
         while (temp) {
-            std::cout << "{" << temp->data.str << ", " << temp->data.integer << ", " << temp->data.dbl << "}\n";
+            std::cout << "Std: " << temp->std << ", Integer: " << temp->integer << ", dbl: " << temp->dbl << std::endl;
             temp = temp->next;
         }
     }
+
+
 };
 
 int main() {
-    LinkedList list;
+    List list;
 
-    list.append("First", 10, 10.1);
-    list.append("Second", 20, 20.2);
-    list.append("Third", 30, 30.3);
-    std::cout << "First list:\n";
-    list.display();
+    
+    list.addFirst("First", 1, 1.1);   
+    list.addintheEnd("Second", 2, 2.2);         // Добавление в конец
+    list.addAfterNumber("First","Third", 3, 3.3);  // Добавление после First
+    list.addBeforeNumber("Second", "Fourth", 4, 4.4); // Добавление перед Second
 
-    list.insertAfter(1, "InsertedAfterSecond", 40, 40.4);
-    std::cout << "\nAfter inserting after index 1:\n";
-    list.display();
+    
+    std::cout << "List content:" << std::endl;
+    list.printList();
 
-    list.insertBefore(0, "InsertedBeforeFirst", 50, 50.5);
-    std::cout << "\nAfter inserting before index 2 :\n";
-    list.display();
+    
+    list.removeNumber("Third");
 
-    list.remove(2);
-    std::cout << "\nAfter removing index 3:\n";
-    list.display();
+    
+    std::cout << "\nUpdated list content:" << std::endl;
+    list.printList();
 
     return 0;
 }
+    
+
+    
