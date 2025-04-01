@@ -1,0 +1,87 @@
+#include <iostream>
+
+
+
+class Animal {
+public:
+    int _age;
+    int _weight;
+    int _height;
+    void (*call)();
+    
+public:
+    Animal(int age, int weight, int height) : _age(age), _weight(weight), _height(height) {};
+    
+    virtual void Speak() {
+        std::cout << "Animal makes a sound" << std::endl;
+    };
+    
+    void Eating() {
+        std::cout << "Animal is eating" << std::endl;
+    }
+};
+
+class Predator : public Animal {
+public:
+    int predatorId;
+    
+public:
+    Predator(int age, int weight, int height) : Animal(age, weight, height) {};
+    
+    void Speak() override {
+        std::cout << "Predater sound" << std::endl;
+    };
+    
+    void Hunt() {
+        std::cout << "Predator is hunting" << std::endl;
+    }
+    
+    template <typename T, typename C>
+    C CalculateFood(T preyWeight, T energy, T& result) {
+        result = preyWeight * energy;
+        return result;
+    }
+};
+
+class Herbivore : public Animal {
+public:
+    int herdSize;
+    
+    Herbivore(int age, int weight, int height) : Animal(age, weight, height) {};
+    
+    void Speak() override {
+        std::cout << "Herbivore sound" << std::endl;
+    }
+};
+
+class Aquatic : public Animal {
+public:
+    int swimSpeed;
+    
+    Aquatic(int age, int weight, int height) : Animal(age, weight, height) {};
+    
+    void Speak() override {
+        std::cout << "Aquatic sound" << std::endl;
+    }
+};
+
+
+
+int main() {
+    Predator lion = Predator(5, 150, 80);
+    lion.call = Call;
+    lion.call();
+    
+    double foodAmount;
+    lion.Speak();
+    lion.CalculateFood<double, int>(50.5, 2.3, foodAmount);
+    std::cout << "Food needed: " << foodAmount << std::endl;
+    
+    Herbivore deer = Herbivore(3, 80, 60);
+    deer.Speak();
+    
+    Aquatic dolphin = Aquatic(10, 200, 150);
+    dolphin.Speak();
+    
+    return 0;
+}
